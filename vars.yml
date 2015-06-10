@@ -2,6 +2,7 @@
 # Documents the main vars for provisioning
 
 document_root: /var/www/mainsite
+user: vagrant
 
 system_packages:
   - build-essential
@@ -31,3 +32,6 @@ pear_channels:
 pear_packages:
   - phing
   - Versioncontrol_Git-0.4.4
+  
+drush_structure_tables: ['cache','cache_filter','cache_menu','cache_page','history','sessions','watchdog','cache_admin_menu','cache_block','cache_field','cache_form','cache_path','cache_token','cache_update','cache_views','cache_views_data','ctools_css_cache','ctools_object_cache','search_dataset','search_index','search_node_links','search_total']
+

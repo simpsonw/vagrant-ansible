@@ -1,3 +1,9 @@
 ---
 - name: reload apache
   service: name=apache2 state=reloaded
+  
+- name: drush cc drush
+  command: drush cc drush
+  register: drush_cc_drush_result
+  failed_when: "drush_cc_drush_result.rc != 0"
+  

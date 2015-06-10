@@ -3,9 +3,17 @@
 
 - name: install composer
   shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin creates=/usr/local/bin/composer
+  
+- name: composer | prepare Composer shared directory
+  file:
+    path=/usr/share/composer
+    state=directory
+  tags: composer
+  sudo: true
 
 - name: rename composer.phar to composer
   shell: mv /usr/local/bin/composer.phar /usr/local/bin/composer creates=/usr/local/bin/composer
 
 - name: make composer executable
   file: path=/usr/local/bin/composer mode=a+x state=file
+  
