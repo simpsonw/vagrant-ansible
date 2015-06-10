@@ -1,0 +1,11 @@
+---
+- name: Install required system packages.
+  apt: name="{{ item }}" state=installed update-cache=yes
+  with_items: "{{ system_packages }}"
+
+#- include: apache.yml
+- include: mysql.yml
+- include: php.yml
+- include: composer.yml
+- include: drush.yml
+

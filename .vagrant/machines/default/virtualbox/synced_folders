@@ -1,0 +1,1 @@
+{"virtualbox":{"/var/www/mainsite":{"guestpath":"/var/www/mainsite","hostpath":"/home/jturman/Dropbox/WORK/UA/vagrant-ansible/mainsite","disabled":false},"/vagrant":{"guestpath":"/vagrant","hostpath":"/home/jturman/Dropbox/WORK/UA/vagrant-ansible","disabled":false}}}

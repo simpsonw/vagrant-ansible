@@ -1,0 +1,12 @@
+---
+- name: Config global drush
+  shell: "composer config -g vendor-dir /usr/local/share"
+  sudo_user: vagrant
+  
+- name: Config global Composer bin
+  shell: "composer config -g bin-dir /usr/local/bin"
+  sudo_user: vagrant
+  
+- name: Install Drush with global Composer
+  shell: "composer global require drush/drush:6.* --no-interaction --no-ansi"
+  sudo_user: vagrant

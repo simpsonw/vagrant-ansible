@@ -1,0 +1,33 @@
+---
+# Documents the main vars for provisioning
+
+document_root: /var/www/mainsite
+
+system_packages:
+  - build-essential
+  - git
+  - postfix
+  - wget
+  - git
+  - curl
+  - zip
+  - unzip
+  - libgd3
+  - libgd-dev
+  - libgd-tools
+  - vim-nox
+  - yaz
+  
+php_packages:
+  - php5-gd
+  - php5-curl
+  - php-pear
+  - php5-mcrypt
+  - php5-dev
+  - php5-xdebug
+  
+pear_channels:
+  - pear.phing.info
+pear_packages:
+  - phing
+  - Versioncontrol_Git-0.4.4

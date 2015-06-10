@@ -1,0 +1,26 @@
+---
+- name: install php
+  apt: name=php5 state=present
+
+- name: Install required PHP packages.
+  apt: name="{{ item }}" state=installed
+  with_items: "{{ php_packages }}"
+    
+- name: Install the system PEAR package
+  apt: name=php-pear state=present
+  when: ansible_os_family == "Debian"
+  
+#- name: get phing channel and install phing
+
+- name: Discover PEAR channels
+  command: "pear channel-discover pear.phing.info"
+  sudo_user: vagrant
+
+- name: Install PEAR phing package
+  command: "pear install --alldeps phing/phing"
+  sudo_user: vagrant
+  
+- name: Install PEAR git package
+  command: "pear install VersionControl_Git-0.4.4"
+  sudo_user: vagrant
+
