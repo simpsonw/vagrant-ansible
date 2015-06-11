@@ -9,8 +9,6 @@
 - name: Install the system PEAR package
   apt: name=php-pear state=present
   when: ansible_os_family == "Debian"
-  
-#- name: get phing channel and install phing
 
 - name: Discover PEAR channels
   command: pear channel-discover {{ item }}
@@ -27,11 +25,11 @@
   failed_when:  "'No releases available for package' in pear_package_result.stdout"
   sudo_user: vagrant
 
-#- name: Install PEAR phing package
-#  command: "pear install --alldeps phing/phing"
-#  sudo_user: vagrant
+- name: Install PEAR phing package
+  command: "pear install --alldeps phing/phing"
+  sudo_user: vagrant
   
-#- name: Install PEAR git package
-#  command: "pear install VersionControl_Git-0.4.4"
-#  sudo_user: vagrant
+- name: Install PEAR git package
+  command: "pear install VersionControl_Git-0.4.4"
+  sudo_user: vagrant
 
