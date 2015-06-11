@@ -7,3 +7,13 @@
   register: drush_cc_drush_result
   failed_when: "drush_cc_drush_result.rc != 0"
   
+- name: save iptables
+  command: iptables-save
+  sudo: true
+  notify:
+   - restart ufw
+   
+- name: restart ufw
+  service: name=ufw state=restarted
+  sudo: true
+  

@@ -18,7 +18,12 @@ system_packages:
   - libgd-tools
   - vim-nox
   - yaz
-  
+
+apache_packages:
+  - apache2
+  - apache2-mpm-prefork
+  - apache2-utils
+
 php_packages:
   - php5-gd
   - php5-curl
@@ -26,7 +31,7 @@ php_packages:
   - php5-mcrypt
   - php5-dev
   - php5-xdebug
-  
+
 pear_channels:
   - pear.phing.info
 pear_packages:
