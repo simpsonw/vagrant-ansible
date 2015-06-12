@@ -17,3 +17,8 @@
   service: name=ufw state=restarted
   sudo: true
   
+- name: restart mysql
+  command: service mysql restart
+  sudo: true
+  changed_when: false
+  

@@ -1,4 +1,6 @@
 ---
+# Install php and packages, PEAR and packages
+
 - name: install php
   apt: name=php5 state=present
 

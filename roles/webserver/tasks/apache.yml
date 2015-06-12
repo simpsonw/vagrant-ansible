@@ -1,5 +1,6 @@
 ---
-#See "VLAD"[https://github.com/hashbangcode/vlad/blob/master/vlad/playbooks/roles/apache/tasks/debian_apache.yml]
+# Install 'Pache packages and mods, restart
+# See "VLAD"[https://github.com/hashbangcode/vlad/blob/master/vlad/playbooks/roles/apache/tasks/debian_apache.yml]
 
 - name: install apache2 packages
   apt: pkg="{{ item }}" state=installed

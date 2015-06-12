@@ -1,4 +1,51 @@
 ---
-- name: install mysql
-  apt: name=mysql-server state=present
+# Install mysql and create an application database
+# see "VLAD"[https://github.com/hashbangcode/vlad/blob/master/vlad/playbooks/roles/mysql/tasks/mysql.yml]
+
+- name: install mysql packages
+  apt: pkg="{{ item }}" state=installed
+  sudo: true
+  with_items: "{{ mysql_pkgs }}"
+  
+# set up mysql variables
+- name: create MySQL configuration file
+  template:
+    src: "mysql.my.cnf.j2"
+    dest: "/etc/mysql/conf.d/my.cnf"
+  sudo: true
+  register: mysql_conf
+  notify:
+  - restart mysql
+  
+- name: get iptables rules
+  shell: iptables -L
+  register: iptablesrules
+  failed_when: "iptablesrules.rc != 0"
+  changed_when: false
+  always_run: yes
+  sudo: true
+
+- name: add mysql to iptables
+  command: iptables -A INPUT -p tcp --dport {{ mysql_port }} -j  ACCEPT  -m comment --comment "mysql"
+  sudo: true
+  when: iptablesrules.stdout.find("mysql") == -1
+  notify:
+  - save iptables
+  - restart mysql
+
+- name: set the root password
+  mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    host: localhost
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    check_implicit_admin: true
+    priv: "*.*:ALL,GRANT"
+    
+- name: remove the MySQL test database
+  mysql_db: db=test state=absent login_user=root login_password={{ mysql_root_password }}
+  
+- name: create application database(s) user(s)
+  mysql_user: name={{ dbuser }} password={{ dbpass }} priv="*.*:ALL,GRANT" host="localhost" state=present login_password={{ mysql_root_password }} login_user=root append_privs=yes
 

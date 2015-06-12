@@ -1,4 +1,6 @@
 ---
+# Installs our primary system packages with apt, includes all the other tasks for webserver
+
 - name: Install required system packages.
   apt: name="{{ item }}" state=installed update-cache=yes
   with_items: "{{ system_packages }}"
@@ -8,4 +10,5 @@
 - include: php.yml
 - include: composer.yml
 - include: drush.yml
+- include: node.yml
 
