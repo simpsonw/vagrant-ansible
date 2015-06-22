@@ -1,8 +1,9 @@
 ---
 - hosts: all
   sudo: true
+  
   vars_files:
-    - vars.yml
+  - vars.yml
     
   pre_tasks:
   - name: update apt cache

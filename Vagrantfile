@@ -58,6 +58,13 @@ Vagrant.configure(2) do |config|
   #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
   # end
 
+	# SSH setup
+  # Vagrant >= 1.7.0 defaults to using a randomly generated RSA key.
+  # We need to disable this in order to pass the correct identity from host to guest.
+  config.ssh.insert_key = false
+  # Allow identities to be passed from host to guest.
+  config.ssh.forward_agent = true
+
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
@@ -66,7 +73,7 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get install -y apache2
   # SHELL
   
-    config.vm.provision :ansible do |ansible|
-        ansible.playbook = "playbook.yml"
-    end
+  config.vm.provision :ansible do |ansible|
+      ansible.playbook = "playbook.yml"
+  end
 end
