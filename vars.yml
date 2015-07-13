@@ -19,11 +19,13 @@ system_packages:
   - vim-nox
   - yaz
 
+# Apache server
 apache_packages:
   - apache2
   - apache2-mpm-prefork
   - apache2-utils
-  
+
+# MySQL
 mysql_pkgs:
   - mysql-client
   - mysql-common
@@ -36,6 +38,7 @@ dbname: libtest
 dbuser: libtest
 dbpass: libby
 
+# PHP
 php_packages:
   - php5-gd
   - php5-curl
@@ -48,6 +51,36 @@ pear_channels:
 pear_packages:
   - phing
   - Versioncontrol_Git-0.4.4
-  
+
+# Ruby - see https://github.com/rvm/rvm1-ansible
+rvm1_rvm_latest_installer: 'https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer'
+rvm1_rvm_version: 'stable'
+rvm1_install_flags: '--auto-dotfiles'
+rvm1_ruby_install_flags:
+rvm1_rvm_check_for_updates: True
+rvm1_gpg_key_server: 'hkp://keys.gnupg.net'
+rvm1_gpg_keys: 'D39DC0E3'
+rvm1_autolib_mode: 3
+rvm1_temp_download_path: '/tmp'
+rvm1_rubies: 'ruby-2.1.3'
+rvm1_default_ruby_version: 'ruby-2.1.3'
+rvm1_delete_ruby:
+rvm1_install_path: '/usr/local/rvm'
+rvm1_rvm: '/usr/local/rvm/bin/rvm'
+rvm1_symlink_to: '/usr/local/bin'
+rvm1_symlink_binaries:
+  - 'bundle'
+  - 'bundler'
+  - 'erb'
+  - 'executable-hooks-uninstaller'
+  - 'gem'
+  - 'irb'
+  - 'rake'
+  - 'rdoc'
+  - 'ri'
+  - 'ruby'
+  - 'testrb'
+
+# Drush for Drupal cli
 drush_structure_tables: ['cache','cache_filter','cache_menu','cache_page','history','sessions','watchdog','cache_admin_menu','cache_block','cache_field','cache_form','cache_path','cache_token','cache_update','cache_views','cache_views_data','ctools_css_cache','ctools_object_cache','search_dataset','search_index','search_node_links','search_total']
 

@@ -13,7 +13,7 @@ Vagrant.configure(2) do |config|
   
   config.vm.provider "virtualbox" do |vb|
      # Customize the amount of memory on the VM:
-     vb.memory = "6144"
+     vb.memory = "2048"
   end
   
   config.vm.synced_folder "mainsite", "/var/www/mainsite"

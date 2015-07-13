@@ -13,3 +13,8 @@
 - name: install Node
   apt: pkg=nodejs state=latest
   sudo: true
+
+- name: install gulp.js
+  command: 'npm install -g gulp'
+  changed_when: False
+  sudo: true
