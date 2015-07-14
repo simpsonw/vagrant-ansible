@@ -1,7 +1,7 @@
 ---
 # Install composer globally
 
-- name: install composer
+- name: composer | install composer
   shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin creates=/usr/local/bin/composer
   
 - name: composer | prepare Composer shared directory
@@ -11,9 +11,9 @@
   tags: composer
   sudo: true
 
-- name: rename composer.phar to composer
+- name: composer | rename composer.phar to composer
   shell: mv /usr/local/bin/composer.phar /usr/local/bin/composer creates=/usr/local/bin/composer
 
-- name: make composer executable
+- name: composer | make composer executable
   file: path=/usr/local/bin/composer mode=a+x state=file
   
