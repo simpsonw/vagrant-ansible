@@ -16,7 +16,7 @@
     force: yes
   sudo: true
 
-- name: composer | prepare user .drush directory
+- name: drush | prepare user .drush directory
   file:
     path: /home/{{ user }}/.drush
     state: directory
@@ -24,7 +24,7 @@
     group: "{{ user }}"
     recurse: yes
 
-- name: composer | ensure previous drush directory is absent
+- name: drush | ensure previous drush directory is absent
   file:
     path: /home/{{ user }}/.composer/vendor/drush/
     state: absent
