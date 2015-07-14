@@ -28,18 +28,18 @@
   always_run: true
   changed_when: false
 
-- name: add apache iptable rule
+- name: apache | add apache iptable rule
   command: iptables -I INPUT 1 -p tcp --dport 80 -j ACCEPT -m comment --comment "webhost"
   sudo: true
   when: iptablesrules.stdout.find("webhost") == -1
   notify:
    - save iptables
 
-- name: add www-data user to dialout group
+- name: apache | add www-data user to dialout group
   user: name=www-data groups=dialout append=yes
   sudo: true
 
-- name: enable mod rewrite module
+- name: apache | enable mod rewrite module
   command: a2enmod rewrite creates=/etc/apache2/mods-enabled/rewrite.load
   sudo: true
   notify:
