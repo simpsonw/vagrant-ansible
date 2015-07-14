@@ -1,30 +1,30 @@
 ---
 # Install php and packages, PEAR and packages
 
-- name: install php
+- name: php | install php
   apt: name=php5 state=present
 
-- name: Install required PHP packages.
+- name: php | Install required PHP packages.
   apt: name="{{ item }}" state=installed
   with_items: "{{ php_packages }}"
     
-- name: Install the system PEAR package
+- name: php | Install the system PEAR package
   apt: name=php-pear state=present
   when: ansible_os_family == "Debian"
 
-- name: Discover PEAR channels
+- name: php | Discover PEAR channels
   command: pear channel-discover "{{ item }}"
   with_items: "{{ pear_channels }}"
   register: pear_channel_result
   changed_when: "'initialized' not in pear_channel_result.stdout"
   failed_when: "'failed' in pear_channel_result.stdout"
 
-- name: Install PEAR phing package
+- name: php | Install PEAR phing package
   command: "sudo pear install --alldeps phing/phing"
   register: phing_installed
   ignore_errors: True
   
-- name: Install PEAR Git package
+- name: php | Install PEAR Git package
   command: "sudo pear install --alldeps Versioncontrol_Git-0.4.4"
   register: vcGit_installed
   ignore_errors: True
