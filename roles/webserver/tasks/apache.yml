@@ -2,26 +2,26 @@
 # Install 'Pache packages and mods, restart
 # See "VLAD"[https://github.com/hashbangcode/vlad/blob/master/vlad/playbooks/roles/apache/tasks/debian_apache.yml]
 
-- name: install apache2 packages
+- name: apache | install apache2 packages
   apt: pkg="{{ item }}" state=installed
   with_items: "{{ apache_packages }}"
   sudo: true
   
-- name: disable the apache default site
+- name: apache | disable the apache default site
   command: a2dissite 000-default.conf removes=/etc/apache2/sites-enabled/000-default.conf
   sudo: true
   
-- name: add custom configuration for ubuntu 14 (1/2)
+- name: apache | add custom configuration for ubuntu 14 (1/2)
   template: src=virtual-hosts.conf.j2 dest=/etc/apache2/conf-available/vagrant.conf
   sudo: true
   
-- name: add custom configuration for ubuntu 14 (2/2)
+- name: apache | add custom configuration for ubuntu 14 (2/2)
   command: a2enconf vagrant creates=/etc/apache2/conf-enabled/vagrant.conf
   sudo: true
   notify:
   - reload apache
   
-- name: get iptables rules
+- name: apache | get iptables rules
   shell: iptables -L
   register: iptablesrules
   sudo: true
