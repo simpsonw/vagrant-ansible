@@ -1,58 +1,58 @@
 ---
 # See https://github.com/rvm/rvm1-ansible
 
-- name: Detect rvm binary
+- name: ruby | Detect rvm binary
   stat: path='{{ rvm1_rvm }}'
   register: rvm_binary
 
-- name: Detect rvm installer
+- name: ruby | Detect rvm installer
   stat: path='{{ rvm1_temp_download_path }}/rvm-installer.sh'
   register: rvm_installer
 
-- name: Detect current rvm version
+- name: ruby | Detect current rvm version
   command: '{{ rvm1_rvm}} version'
   changed_when: False
   register: rvm_current_version
   when: rvm_binary.stat.exists
 
-- name: Install rvm installer
+- name: ruby | Install rvm installer
   get_url:
     url: '{{ rvm1_rvm_latest_installer }}'
     dest: '{{ rvm1_temp_download_path }}/rvm-installer.sh'
   when: not rvm_installer.stat.exists
 
-- name: Configure rvm installer
+- name: ruby | Configure rvm installer
   file:
     path: '{{ rvm1_temp_download_path }}/rvm-installer.sh'
     mode: 0755
   when: not rvm_binary.stat.exists
 
-- name: Import GPG keys
+- name: ruby | Import GPG keys
   command: 'gpg --keyserver {{ rvm1_gpg_key_server }} --recv-keys {{ rvm1_gpg_keys }}'
   changed_when: False
   when: rvm1_gpg_keys != ''
   sudo_user: 'root'
 
-- name: Install rvm
+- name: ruby | Install rvm
   command: >
     {{ rvm1_temp_download_path }}/rvm-installer.sh {{ rvm1_rvm_version }}
     --path {{ rvm1_install_path }} {{ rvm1_install_flags }}
   when: not rvm_binary.stat.exists
   sudo_user: 'root'
 
-- name: Update rvm
+- name: ruby | Update rvm
   shell: '{{ rvm1_rvm }} get {{ rvm1_rvm_version }} && {{ rvm1_rvm }} reload'
   changed_when: False
   when: rvm_binary.stat.exists and rvm1_rvm_check_for_updates
   sudo_user: 'root'
 
-- name: Configure rvm
+- name: ruby | Configure rvm
   command: '{{ rvm1_rvm }} autolibs {{ rvm1_autolib_mode }}'
   when: not rvm_binary.stat.exists
   sudo_user: 'root'
 
 # Install Rubies
-- name: Detect if rubies are installed
+- name: ruby | Detect if rubies are installed
   command: '{{ rvm1_rvm }} {{ item }} do true'
   changed_when: False
   failed_when: False
@@ -60,23 +60,23 @@
   with_items: rvm1_rubies
   when: rvm1_rubies
 
-- name: Install rubies
+- name: ruby | Install rubies
   command: '{{ rvm1_rvm }} install {{ item.item }} {{ rvm1_ruby_install_flags }}'
   when: rvm1_rubies and item.rc != 0
   with_items: detect_rubies.results
   sudo_user: 'root'
 
-- name: Detect default ruby version
+- name: ruby | Detect default ruby version
   command: '{{ rvm1_rvm }} alias list default'
   changed_when: False
   register: detect_default_ruby_version
 
-- name: Select default ruby
+- name: ruby | Select default ruby
   command: '{{ rvm1_rvm }} alias create default {{ rvm1_default_ruby_version }}'
   when: detect_default_ruby_version.stdout == '' or
         rvm1_default_ruby_version not in detect_default_ruby_version.stdout
 
-- name: Install bundler if not installed
+- name: ruby | Install bundler if not installed
   shell: >
     {{ rvm1_install_path }}/wrappers/{{ item }}/gem list
     | if ! grep "^bundler " ; then {{ rvm1_install_path }}/wrappers/{{ item }}/gem install bundler ; fi
@@ -86,7 +86,7 @@
   register: bundler_install
   changed_when: '"Successfully installed bundler" in bundler_install.stdout'
 
-- name: Symlink ruby related binaries on the system path
+- name: ruby | Symlink ruby related binaries on the system path
   file:
     state: 'link'
     src: '{{ rvm1_install_path }}/wrappers/default/{{ item }}'
@@ -96,19 +96,19 @@
   when: not '--user-install' in rvm1_install_flags
   with_items: rvm1_symlink_binaries
 
-- name: Detect if ruby version can be deleted
+- name: ruby | Detect if ruby version can be deleted
   command: '{{ rvm1_rvm }} {{ rvm1_delete_ruby }} do true'
   changed_when: False
   failed_when: False
   register: detect_delete_ruby
   when: rvm1_delete_ruby
 
-- name: Delete ruby version
+- name: ruby | Delete ruby version
   command: '{{ rvm1_rvm }} remove {{ rvm1_delete_ruby }}'
   changed_when: False
   when: rvm1_delete_ruby and detect_delete_ruby.rc == 0
 
-- name: Install Compass gem
+- name: ruby | Install Compass gem
   command: 'gem install compass'
   changed_when: False
   sudo: true
