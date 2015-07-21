@@ -13,7 +13,7 @@ Vagrant.configure(2) do |config|
   
   config.vm.provider "virtualbox" do |vb|
      # Customize the amount of memory on the VM:
-     vb.memory = "2048"
+     vb.memory = "4096"
   end
   
   config.vm.synced_folder "mainsite", "/var/www/mainsite"
@@ -26,11 +26,6 @@ Vagrant.configure(2) do |config|
     config.cache.enable :gem
     config.cache.enable :npm
   end
-
-  # SSH setup
-  config.ssh.insert_key = false
-  config.ssh.forward_agent = true
-
   
   config.vm.provision :ansible do |ansible|
       ansible.playbook = "playbook.yml"
