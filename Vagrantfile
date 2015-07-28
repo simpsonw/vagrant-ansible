@@ -25,7 +25,6 @@ Vagrant.configure(2) do |config|
 	  end
 
 	  v.customize ["modifyvm", :id, "--memory", mem]
-	  v.customize ["modifyvm", :id, "--cpus", cpus]
 	end
   
   config.vm.synced_folder "mainsite", "/var/www/mainsite", nfs: true
