@@ -18,35 +18,34 @@
 
 - name: drush | prepare user .drush directory
   file:
-    path: /home/{{ user }}/.drush
+    path: /home/vagrant/.drush
     state: directory
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    owner: "vagrant"
+    group: "vagrant"
     recurse: yes
 
 - name: drush | ensure previous drush directory is absent
   file:
-    path: /home/{{ user }}/.composer/vendor/drush/
+    path: /home/vagrant/.composer/vendor/drush/
     state: absent
 
 - name: drush | download the site audit module
-  command: drush dl site_audit --destination=/home/{{ user }}/.drush/site_audit --yes
-    creates=/home/{{ user }}/.drush/site_audit
+  command: drush dl site_audit --destination=/home/vagrant/.drush/site_audit --yes
+    creates=/home/vagrant/.drush/site_audit
   notify: drush cc drush
 
 - name: drush | download the Coder module
-  command: drush dl coder-7.x-2.x --destination=/home/{{ user }}/.drush/coder --yes
-    creates=/home/{{ user }}/.drush/coder
+  command: drush dl coder-7.x-2.x --destination=/home/vagrant/.drush/coder --yes
+    creates=/home/vagrant/.drush/coder
   notify: drush cc drush
 
 - name: drush | download the Registry Rebuild module
-  command: drush dl registry_rebuild --destination=/home/{{ user }}/.drush/registry_rebuild --yes
-    creates=/home/{{ user }}/.drush/registry_rebuild
+  command: drush dl registry_rebuild --destination=/home/vagrant/.drush/registry_rebuild --yes
+    creates=/home/vagrant/.drush/registry_rebuild
   notify: drush cc drush
 
 - name: drush | Create drushrc.php file
   template:
     src: drushrc.php.j2
-    dest: /home/{{ user }}/.drush/drushrc.php
+    dest: /home/vagrant/.drush/drushrc.php
   notify: drush cc drush
-  

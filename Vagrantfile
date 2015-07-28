@@ -9,14 +9,26 @@ Vagrant.configure(2) do |config|
 
   config.vm.box = "ubuntu/trusty64"
 
+  config.vm.network :private_network, ip: '192.168.50.50'
   config.vm.network "forwarded_port", guest: 80, host: 8081
   
-  config.vm.provider "virtualbox" do |vb|
-     # Customize the amount of memory on the VM:
-     vb.memory = "4096"
-  end
+  config.vm.provider "virtualbox" do |v|
+	  host = RbConfig::CONFIG['host_os']
+
+	  # VM 1/4 system memory & access to all cpu cores on the host
+	  if host =~ /darwin/
+	    # sysctl returns Bytes and we need to convert to MB
+	    mem = `sysctl -n hw.memsize`.to_i / 1024 / 1024 / 4
+	  elsif host =~ /linux/
+	    # meminfo shows KB and we need to convert to MB
+	    mem = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024 / 4
+	  end
+
+	  v.customize ["modifyvm", :id, "--memory", mem]
+	  v.customize ["modifyvm", :id, "--cpus", cpus]
+	end
   
-  config.vm.synced_folder "mainsite", "/var/www/mainsite"
+  config.vm.synced_folder "mainsite", "/var/www/mainsite", nfs: true
   
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :machine

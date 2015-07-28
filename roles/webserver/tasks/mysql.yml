@@ -32,6 +32,11 @@
   notify:
   - save iptables
   - restart mysql
+  
+- name: mysql | check to see if root password file is present
+  stat: path=/home/vagrant/.my.cnf
+  register: mysql_myconf_file
+  sudo: yes
 
 - name: mysql | set the root password
   mysql_user:
@@ -42,6 +47,20 @@
     login_password: "{{ mysql_root_password }}"
     check_implicit_admin: true
     priv: "*.*:ALL,GRANT"
+  when: mysql_myconf_file.stat.exists == false
+  
+- name: mysql | config for easy access as root user
+  template: 
+    src: "mysql_root.my.cnf.j2"
+    dest: "/root/.my.cnf"
+  when: "'vagrant' == 'root'"
+  sudo: true
+
+- name: mysql | config for easy access as root user
+  template:
+    src: "mysql_root.my.cnf.j2"
+    dest: "/home/vagrant/.my.cnf"
+  when: "'vagrant' != 'root'"
     
 - name: mysql | remove the MySQL test database
   mysql_db: db=test state=absent login_user=root login_password={{ mysql_root_password }}
