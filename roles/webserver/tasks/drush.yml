@@ -44,8 +44,3 @@
     creates=/home/vagrant/.drush/registry_rebuild
   notify: drush cc drush
 
-- name: drush | Create drushrc.php file
-  template:
-    src: drushrc.php.j2
-    dest: /home/vagrant/.drush/drushrc.php
-  notify: drush cc drush
