@@ -1,7 +1,7 @@
 ---
 # Documents the main vars for provisioning
 
-document_root: /var/www/mainsite
+document_root: /var/www/webroot
 user: vagrant
 
 system_packages:

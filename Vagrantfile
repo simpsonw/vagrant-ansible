@@ -10,7 +10,7 @@ Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
 
   config.vm.network :private_network, ip: '192.168.50.50'
-  config.vm.network "forwarded_port", guest: 80, host: 8081
+  config.vm.network "forwarded_port", guest: 80, host: 8082
   
   config.vm.provider "virtualbox" do |v|
 	  host = RbConfig::CONFIG['host_os']
@@ -27,7 +27,7 @@ Vagrant.configure(2) do |config|
 	  v.customize ["modifyvm", :id, "--memory", mem]
 	end
   
-  config.vm.synced_folder "mainsite", "/var/www/mainsite", nfs: true
+  config.vm.synced_folder "webroot", "/var/www/webroot", nfs: true
   
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :machine
